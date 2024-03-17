@@ -47,14 +47,20 @@ const authenticateJwt = (req, res, next) => {
 
     jwt.verify(token, SECRET, (err, user) => {
       if (err) {
-        return res.sendStatus(403);
+        return res.status(403).json({
+          error: true,
+          message: "You don't have permission to access this page"
+        });
       }
 
       req.user = user;
       next();
     });
   } else {
-    res.sendStatus(401);
+    return res.status(401).json({
+      error: true,
+      message: "Please login to continue"
+    });
   }
 };
 
