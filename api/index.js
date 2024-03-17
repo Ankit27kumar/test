@@ -31,7 +31,8 @@ const notesSchema = new mongoose.Schema({
 const Admin = mongoose.model('Admin', adminSchema);
 const Note = mongoose.model('Note', notesSchema);
 try {
-  mongoose.connect("mongodb+srv://tested:5BYofdq6lH5b8N0S@notes.lbwse2i.mongodb.net/myFirstDatabase?retryWrites=true&w=majority");
+  mongoose.connect('mongodb+srv://2022007381ankit:U3xNALvKEojRi5q2@cluster0.etoup5d.mongodb.net/demo1', { useNewUrlParser: true, useUnifiedTopology: true, dbName: "demo1" });
+
 } catch (error) {
 
   console.log(error);
