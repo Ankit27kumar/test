@@ -59,9 +59,17 @@ const authenticateJwt = (req, res, next) => {
 };
 
 
+app.get('/api', (req, res) => {
+  return res.json({
+    'login': '/api/login',
+    'register': '/api/signup',
+    'addNote': '/api/note',
+    'getNote': '/api/getNote',
 
+  })
+});
 
-app.post('/signup', (req, res) => {
+app.post('/api/signup', (req, res) => {
   const { username, password } = req.body;
   function callback(admin) {
     if (admin) {
@@ -78,7 +86,7 @@ app.post('/signup', (req, res) => {
   Admin.findOne({ username }).then(callback);
 });
 
-app.post('/login', async (req, res) => {
+app.post('/api/login', async (req, res) => {
   const { username, password } = req.body;
   const admin = await Admin.findOne({ username, password });
   if (admin) {
@@ -89,7 +97,7 @@ app.post('/login', async (req, res) => {
   }
 });
 
-app.post('/note', authenticateJwt, async (req, res) => {
+app.post('/api/note', authenticateJwt, async (req, res) => {
   const { title, description } = new Note(req.body);
   const obj = { title: title, description: description };
   const newnote = new Note(obj);
@@ -107,18 +115,18 @@ app.post('/note', authenticateJwt, async (req, res) => {
 });
 
 
-app.get('/getnote', authenticateJwt, async (req, res) => {
+app.get('/api/getnote', authenticateJwt, async (req, res) => {
   const user = req.user.username;
   const admin = await Admin.findOne({ username: user }).populate('journal');
   const journal = admin.journal;
   res.json({ journal });
 });
-app.get("/admin/me", authenticateJwt, async (res, req) => {
+app.get("/api/admin/me", authenticateJwt, async (res, req) => {
   res.send(req.user);
 })
 
 
-app.delete("/delete/:noteId", authenticateJwt, async (req, res) => {
+app.delete("/api/delete/:noteId", authenticateJwt, async (req, res) => {
   const noteId = req.params.noteId;
 
   try {
@@ -129,6 +137,21 @@ app.delete("/delete/:noteId", authenticateJwt, async (req, res) => {
     console.error(err);
     res.status(500).send('Error deleting note');
   }
+});
+
+app.get('*', (req, res) => {
+  return res.json({
+    error: true,
+    message: '404 error'
+  })
+});
+
+
+app.post('*', (req, res) => {
+  return res.json({
+    error: true,
+    message: '404 error'
+  })
 });
 
 app.listen(PORT, () => {
