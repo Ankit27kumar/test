@@ -31,7 +31,7 @@ const notesSchema = new mongoose.Schema({
 const Admin = mongoose.model('Admin', adminSchema);
 const Note = mongoose.model('Note', notesSchema);
 try {
-  mongoose.connect(process.env.MONGO_URL);
+  mongoose.connect("mongodb+srv://tested:5BYofdq6lH5b8N0S@notes.lbwse2i.mongodb.net/myFirstDatabase?retryWrites=true&w=majority");
 } catch (error) {
 
   console.log(error);
